@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <fstream>
 #include <openssl/ssl.h>
 #include <openssl/bio.h>
 
@@ -15,17 +15,24 @@ int main(int argc, char *argv[])
 	//The SHA1 hash BIO is chained to the input BIO, though it could just
 	//  as easily be chained to the output BIO instead.
 
-	char infilename[] = "infile.txt";
+	char infilename[] = "griffin.txt";
 	char outfilename[] = "outfile.txt";
+	char rsaprivatekey[]="rsaprivatekey.pem";
 
 	char* buffer[1024];
 
-	BIO *binfile, *boutfile, *hash;
+	BIO *binfile, *boutfile, *hash, *rsaprivate;
 	binfile = BIO_new_file(infilename, "r");
 	boutfile = BIO_new_file(outfilename, "w") ;
 	hash = BIO_new(BIO_f_md());
 	BIO_set_md(hash, EVP_sha1());
 
+	FILE *f= fopen("rsaprivatekey.pem","r");
+	BIO *rsa=PEM_read_bio_RSAPrivateKey(f, NULL, NULL, NULL );
+	//Bio *rsa_meh= RSA_private_encrypt(rsa,RSA_PKCS1_PADDING);
+
+	binfile = BIO_new_file(infilename, "r");
+	
 	//Chain on the input
 	BIO_push(hash, binfile);
 
