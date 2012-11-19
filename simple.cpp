@@ -27,8 +27,8 @@ int main(int argc, char *argv[])
 	hash = BIO_new(BIO_f_md());
 	BIO_set_md(hash, EVP_sha1());
 
-	FILE *f= fopen("rsaprivatekey.pem","r");
-	BIO *rsa=PEM_read_bio_RSAPrivateKey(f, NULL, NULL, NULL );
+	BIO *f= BIO_new_file(rsaprivatekey,"r");
+	RSA *rsa=PEM_read_bio_RSAPrivateKey(f, NULL, NULL, NULL );
 	//Bio *rsa_meh= RSA_private_encrypt(rsa,RSA_PKCS1_PADDING);
 
 	binfile = BIO_new_file(infilename, "r");
