@@ -20,6 +20,8 @@ int main(int argc, char *argv[])
 	char rsaprivatekey[]="rsaprivatekey.pem";
 
 	char* buffer[1024];
+	char *bufferin[1024];
+	char *bufferout[1024];
 
 	BIO *binfile, *boutfile, *hash, *rsaprivate;
 	binfile = BIO_new_file(infilename, "r");
@@ -29,7 +31,9 @@ int main(int argc, char *argv[])
 
 	BIO *f= BIO_new_file(rsaprivatekey,"r");
 	RSA *rsa=PEM_read_bio_RSAPrivateKey(f, NULL, NULL, NULL );
-	//Bio *rsa_meh= RSA_private_encrypt(rsa,RSA_PKCS1_PADDING);
+	
+
+	int rsa_decryt= RSA_private_encrypt(1024,(unsigned char*)buffer,(unsigned char *)bufferout,rsa,RSA_PKCS1_PADDING);
 
 	binfile = BIO_new_file(infilename, "r");
 	
