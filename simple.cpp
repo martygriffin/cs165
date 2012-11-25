@@ -41,6 +41,9 @@ int main(int argc, char *argv[])
 	
 	int rsa_decryt = RSA_public_decrypt(1024,(unsigned char *) buffer, (unsigned char*)bufferout,rsa,RSA_PKCS1_PADDING);
 
+	cout<<bufferout<<endl;
+	RSA_free(rsa);
+	RSA_free(rsa2);
 	binfile = BIO_new_file(infilename, "r");
 	
 	//Chain on the input
