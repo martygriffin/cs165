@@ -1,0 +1,79 @@
+#!/usr/bin/python
+import sys,os
+import binascii
+#n= 58781, a= 13459, b=40195 - based on calucaltions I did on paper/ wth wolfram alpha
+a=13459
+b=40195
+n=58781
+
+def r_generate(a,b,n,r):
+	return ((a*r) + b) % n
+
+file = open("problem2.enc", 'rb')
+file2 = open("plain.txt", 'rb')
+
+rs = []
+
+for i in range(4):
+    # read in the characters from the encrypted file and plaintext file
+    line =  file.read(2)
+    line2 =  file2.read(2)
+	
+    #store the XOR'd line and line2
+    line=''.join(chr(ord(a)^ord(b)) for a,b in zip(line,line2))
+    
+    rs.append(line)
+    binaries = []
+    file3 = open("problem2.enc", 'rb')
+for i in range(len(rs)):
+    #convert rs[i] to binary
+    #b = bin(reduce(lambda x, y: 256*x+y, (ord(c) for c in rs[i]), 0))
+	bin_num = bin(int(binascii.hexlify(rs[i]), 16))
+    #print b
+   # xo = int(b,2) ^ int(binascii.hexlify(file3.read(2), 16))
+   # n = int(b,2)
+   # c = binascii.unhexlify('%x' % xo)
+   #s print c
+    #print xo
+	binaries.append(int(bin_num,2))
+
+
+prev_r = binaries[0]
+flie4 = open('problem2.enc','rb')
+count = 0
+
+file6 = open("plaintext.txt", "w")
+while 1:
+	line= file.read(2)
+	#print int(prev_r)
+	if not line:
+		break
+        bin_char = int(binascii.hexlify(line),16)
+	
+	prev_r= r_generate(a,b,n,prev_r)
+	xor_val =  bin_char ^ (prev_r)
+	#line=''.join(chr(ord(a)^ord(b)) for a,b in zip(line,str(prev_r)))
+	#print xor_val
+	#print line
+	
+	#bin_char = bin(xor_val)
+	#bin_char= binascii.b2a_uu(bin_char)
+	#bin_char=binascii.hexlify(bin_char)	
+	#bin_char=binascii.b2a_hex(bin_char)
+	#print bin_char
+	c=bin_char
+	#c = binascii.unhexlify('%x' % xor_val)
+	file6.write(str(c) +" ")
+	if count == 50:
+		count = 0
+		file6.write("\n")
+	count = count+1
+	#print str(c)
+	
+
+    
+
+
+
+
+
