@@ -54,10 +54,10 @@ int main(int argc, char *argv[])
 
 	int actualRead, actualWritten;
 
-	while((actualRead = BIO_read(hash, buffer, 1024)) >= 1)
+	while((actualRead = BIO_read(hash, bufferout, 1024)) >= 1)
 	{
 		//Could send this to multiple chains from here
-		actualWritten = BIO_write(boutfile, buffer, actualRead);
+		actualWritten = BIO_write(boutfile, bufferout, actualRead);
 	}
 
 	//Get digest
