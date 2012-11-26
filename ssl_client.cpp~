@@ -4,7 +4,7 @@
 //              secure file transfer with a single server over a single
 //              connection
 //----------------------------------------------------------------------------
-//./client localhost:3305 griffin.txt 
+//(char*)FileMeasure.c_str();
 #include <string>
 #include <time.h>               // to seed random number generator
 #include <sstream>          // stringstreams

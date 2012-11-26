@@ -39,8 +39,11 @@ int main(int argc, char *argv[])
 	BIO *pub= BIO_new_file("rsapublickey.pem","r");
 	RSA *rsa2=PEM_read_bio_RSA_PUBKEY(pub, NULL, NULL, NULL );
 	
-	int rsa_decryt = RSA_public_decrypt(1023,(unsigned char *) buffer, (unsigned char*)bufferout,rsa,RSA_PKCS1_PADDING);
+	int rsa_decryt = RSA_public_decrypt(1024,(unsigned char *) buffer, (unsigned char*)bufferout,rsa,RSA_PKCS1_PADDING);
 
+	cout<<bufferout<<endl;
+	RSA_free(rsa);
+	RSA_free(rsa2);
 	binfile = BIO_new_file(infilename, "r");
 	
 	//Chain on the input
@@ -51,10 +54,10 @@ int main(int argc, char *argv[])
 
 	int actualRead, actualWritten;
 
-	while((actualRead = BIO_read(hash, buffer, 1024)) >= 1)
+	while((actualRead = BIO_read(hash, bufferout, 1024)) >= 1)
 	{
 		//Could send this to multiple chains from here
-		actualWritten = BIO_write(boutfile, buffer, actualRead);
+		actualWritten = BIO_write(boutfile, bufferout, actualRead);
 	}
 
 	//Get digest
