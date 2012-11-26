@@ -1,14 +1,16 @@
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
-
+#include<iostream>
+ using namespace std;
 int main()
 {
-        char *message = "Hello World";
+	string s = "Hello World";        
+	char *message =(char *) s.c_str();
         unsigned char* encrypted = (unsigned char *) malloc(500);
         unsigned char* decrypted = (unsigned char *) malloc(500);
         int bufSize;
 
-        FILE *keyfile = fopen("privkey.pem", "r");
+        FILE *keyfile = fopen("rsaprivatekey.pem", "r");
         RSA *rsa = PEM_read_RSAPrivateKey(keyfile, NULL, NULL, NULL);
         printf("\n\nStarting Message = %s\n", message);
         if (rsa == NULL)
