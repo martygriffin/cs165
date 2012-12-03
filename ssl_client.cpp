@@ -8,6 +8,7 @@
 #include <string>
 #include <time.h>               // to seed random number generator
 #include <sstream>          // stringstreams
+#include <iostream>
 using namespace std;
 
 #include <openssl/ssl.h>	// Secure Socket Layer library
@@ -94,12 +95,28 @@ int main(int argc, char** argv)
 	printf("2.  Sending challenge to the server...");
     
     string randomNumber="31337";
-   char * read_buffer= (char *)randomNumber.c_str();
+   BIO *hash;
+   hash = BIO_new(BIO_f_md());
+   BIO_set_md(hash, EVP_sha1());
+   //BIO *binfile = BIO_new_file(randomNumber.c_str(), "r");
 
+BIO * test= BIO_new(BIO_s_mem());
+BIO_push(hash, test);
+int x = BIO_write(test,randomNumber.c_str(),randomNumber.size());
    
+   char  read_buffer[1024] = {0};
+   //char * read_buffer= (char *)randomNumber.c_str();
+   //int c =BIO_read(test, read_buffer,1024);
+   int w=BIO_gets(test,read_buffer,1024);
+//check c value at some point
+//cout<<c;
+  
+string c= buff2hex((const unsigned char*)read_buffer, w);
+string r = read_buffer;
+//cout<<r<<endl;
 	
 	//SSL_write
-	SSL_write(ssl,read_buffer,1024);
+	SSL_write(ssl,c.c_str(),1024);
     
     printf("SUCCESS.\n");
 	printf("    (Challenge sent: \"%s\")\n", randomNumber.c_str());
