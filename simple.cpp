@@ -32,22 +32,23 @@ int main(int argc, char *argv[])
 
 	BIO *f= BIO_new_file(rsaprivatekey,"r");
 	RSA *rsa=PEM_read_bio_RSAPrivateKey(f, NULL, NULL, NULL );
-	
+	int a=BIO_read(binfile,buffer, 1024);
+	BIO_push(hash, binfile);
 
-	int rsa_encryt= RSA_private_encrypt(1024,(unsigned char*)buffer,(unsigned char *)bufferout,rsa,RSA_PKCS1_PADDING);
+	int rsa_encryt= RSA_private_encrypt(1024,(unsigned char*)buffer,(unsigned char *)bufferin,rsa,RSA_PKCS1_PADDING);
 
 	BIO *pub= BIO_new_file("rsapublickey.pem","r");
 	RSA *rsa2=PEM_read_bio_RSA_PUBKEY(pub, NULL, NULL, NULL );
 	
-	int rsa_decryt = RSA_public_decrypt(1024,(unsigned char *) buffer, (unsigned char*)bufferout,rsa,RSA_PKCS1_PADDING);
+	int rsa_decryt = RSA_public_decrypt(1024,(unsigned char *) bufferin, (unsigned char*)bufferout,rsa,RSA_PKCS1_PADDING);
 
 	cout<<bufferout<<endl;
 	RSA_free(rsa);
 	RSA_free(rsa2);
-	binfile = BIO_new_file(infilename, "r");
+	//binfile = BIO_new_file(infilename, "r");
 	
 	//Chain on the input
-	BIO_push(hash, binfile);
+	
 
 	//Chain on the output
 	//BIO_push(hash, boutfile);
