@@ -1,20 +1,4 @@
-Marty Griffin - CS 165
-Windows 8 security features improve, but IT concerns remain
-Stuart J. Johnston
-Published: 19 Nov 2012
-E-MailPrintAAAAAA
-inShare
-FacebookTwitterShare ThisRSSReprints
-As IT pros start testing Windows 8 security, one key question is how Microsoft's new operating system compares to its predecessor, Windows 7.
-
-Microsoft added several new Windows 8 security features, but the OS is still vulnerable to some common malware families and other attacks, according to reports by anti-malware vendors. That has some IT pros concerned.
-
-"Security is vital for what we do and for anybody who works with highly sensitive data," said Tim Robinson, network administrator for Waltonen Engineering Inc., a mechanical engineering and manufacturing firm in Warren, Mich.
-
-That's especially true for companies, such as Waltonen, that do a lot of work for the federal government. One exploit of Windows security vulnerabilities can cause them to lose valuable contracts, Robinson said.
-
-New Windows 8 security features
-One of the security enhancements in Windows 8 is Secure Boot, which helps to block boot loaders and rootkit attacks. It also provides support for Early Launch Anti-malware, which aims to keep viruses from loading before legitimate code during the boot process. Secure Boot takes advantage of the Unified Extensible Firmware Interface specification, which replaces BIOS firmware in Windows 8 systems.
+e of the security enhancements in Windows 8 is Secure Boot, which helps to block boot loaders and rootkit attacks. It also provides support for Early Launch Anti-malware, which aims to keep viruses from loading before legitimate code during the boot process. Secure Boot takes advantage of the Unified Extensible Firmware Interface specification, which replaces BIOS firmware in Windows 8 systems.
 
 Other Windows 8 security features include a built-in version of Microsoft's antivirus engine as part of the new Windows Defender security package. In addition, Microsoft enhanced existing Windows security features, such as Address Space Layout Randomization and Data Execution Prevention -- technologies meant to keep hackers from guessing where vulnerable system code is located in memory.
 

@@ -114,14 +114,14 @@ int main(int argc, char** argv)
 	//BIO_write
 	BIO * test= BIO_new(BIO_s_mem());
 
-	BIO_write(test,c_num,1024);
-	 BIO *hash;
-	hash = BIO_new(BIO_f_md());
+	BIO_write(test,c_num,20);
+	
+	BIO *hash = BIO_new(BIO_f_md());
 	BIO_set_md(hash, EVP_sha1());
-	BIO_new(BIO_s_mem());
+	//BIO_new(BIO_s_mem());
 	BIO_push(hash,test);
-	char* hash_challenge = new char[1024];
-	BIO_gets(test,hash_challenge,1024);
+	char* hash_challenge = new char[20];
+	BIO_gets(hash,hash_challenge,20);
 	//BIO_new(BIO_f_md());
 	//BIO_set_md;
 
@@ -130,10 +130,12 @@ int main(int argc, char** argv)
 
     int mdlen=0;
 	string hash_string = hash_challenge;
+	SSL_write(ssl, hash_challenge, 20);
 	
 	printf("SUCCESS.\n");
-	//SSL_write(ssl,c_num,1024);
-	printf("    (SHA1 hash: \"%s\" (%d bytes))\n","written to client", 1024);
+	
+	printf("    (SHA1 hash: \"%s\" (%d bytes))\n",
+buff2hex((const unsigned char*)hash_challenge, 20).c_str(), 20);
 
     //-------------------------------------------------------------------------
 	// 4. Sign the key using the RSA private key specified in the

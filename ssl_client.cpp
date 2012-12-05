@@ -116,19 +116,19 @@ int main(int argc, char** argv)
 //cout<<r<<endl;
 	
 	//SSL_write
-	SSL_write(ssl,randomNumber.c_str(),1024);
+	SSL_write(ssl,randomNumber.c_str(),BUFFER_SIZE);
     
     printf("SUCCESS.\n");
-	printf("    (Challenge sent: \"%s\")\n", randomNumber.c_str(),1024);
+	printf("    (Challenge sent: \"%s\")\n", randomNumber.c_str(),20);
 
     //-------------------------------------------------------------------------
 	// 3a. Receive the signed key from the server
 	printf("3a. Receiving signed key from server...");
     string s="FIXME";
-    char* buff= new char[1024];
-    int len=1024;
+    char* buff= new char[20];
+    int len=20;
 	//SSL_read;
- 	SSL_read(ssl,buff,1024);
+ 	SSL_read(ssl,buff,20);
 
 	printf("RECEIVED.\n");
 	printf("    (Signature: \"%s\" (%d bytes))\n", buff2hex((const unsigned char*)buff, len).c_str(), len);

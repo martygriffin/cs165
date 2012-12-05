@@ -54,6 +54,8 @@ int main(int argc, char *argv[])
 	//BIO_push(hash, boutfile);
 
 	int actualRead, actualWritten;
+	char mdbuf[EVP_MAX_MD_SIZE];
+	int mdlen = BIO_gets(hash, mdbuf, EVP_MAX_MD_SIZE);
 
 	while((actualRead = BIO_read(hash, bufferout, 1024)) >= 1)
 	{
@@ -62,8 +64,7 @@ int main(int argc, char *argv[])
 	}
 
 	//Get digest
-	char mdbuf[EVP_MAX_MD_SIZE];
-	int mdlen = BIO_gets(hash, mdbuf, EVP_MAX_MD_SIZE);
+	
 	for(int i = 0; i < mdlen; i++)
 	{
 		//Print two hexadecimal digits (8 bits or 1 character) at a time
