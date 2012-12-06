@@ -56,7 +56,6 @@ int main(int argc, char *argv[])
 	int actualRead, actualWritten;
 	char mdbuf[EVP_MAX_MD_SIZE];
 	int mdlen = BIO_gets(hash, mdbuf, EVP_MAX_MD_SIZE);
-
 	while((actualRead = BIO_read(hash, bufferout, 1024)) >= 1)
 	{
 		//Could send this to multiple chains from here

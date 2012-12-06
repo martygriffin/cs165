@@ -7,7 +7,7 @@
 #include <string>
 #include <time.h>
 using namespace std;
-
+#include <iostream>
 #include <openssl/ssl.h>	// Secure Socket Layer library
 #include <openssl/bio.h>	// Basic Input/Output objects for SSL
 #include <openssl/rsa.h>	// RSA algorithm etc
@@ -118,15 +118,10 @@ int main(int argc, char** argv)
 	
 	BIO *hash = BIO_new(BIO_f_md());
 	BIO_set_md(hash, EVP_sha1());
-	//BIO_new(BIO_s_mem());
 	BIO_push(hash,test);
 	char* hash_challenge = new char[20];
 	BIO_gets(hash,hash_challenge,20);
-	//BIO_new(BIO_f_md());
-	//BIO_set_md;
 
-	//BIO_push;
-	//BIO_gets;
 
     int mdlen=0;
 	string hash_string = hash_challenge;
@@ -141,24 +136,41 @@ buff2hex((const unsigned char*)hash_challenge, 20).c_str(), 20);
 	// 4. Sign the key using the RSA private key specified in the
 	//     file "rsaprivatekey.pem"
 	printf("4. Signing the key...");
+	char rsaprivatekey[]="rsaprivatekey.pem";
+	BIO *f= BIO_new_file(rsaprivatekey,"r");
+	RSA *rsa=PEM_read_bio_RSAPrivateKey(f, NULL, NULL, NULL );
+	char rsa_enc  [1024]={0};	
+	//&rsa_enc ={0};
+	
+
+	int rsa_encrypt= RSA_private_encrypt(20,(unsigned char*)hash_challenge,(unsigned char *)rsa_enc,rsa,RSA_PKCS1_PADDING);
+int len =20;
+char *bufferout[1024]={0};
+BIO *pub= BIO_new_file("rsapublickey.pem","r");
+	RSA *rsa2=PEM_read_bio_RSA_PUBKEY(pub, NULL, NULL, NULL );
+	
+	int rsa_decryt = RSA_public_decrypt(rsa_encrypt,(unsigned char *) rsa_enc, (unsigned char*)bufferout,rsa2,RSA_PKCS1_PADDING);
+	std:cout<<rsa_encrypt;
 
     //PEM_read_bio_RSAPrivateKey
     //RSA_private_encrypt
 
-    int siglen=0;
-    string s = "FIXME";
-    char* signature=(char *) s.c_str();
+    int siglen=128;
+  
+    char* signature=rsa_enc;
 
     printf("DONE.\n");
     printf("    (Signed key length: %d bytes)\n", siglen);
     printf("    (Signature: \"%s\" (%d bytes))\n", buff2hex((const unsigned char*)signature, siglen).c_str(), siglen);
+printf("    (Decrypted key: %s)\n", buff2hex((const unsigned char*)bufferout, len).c_str(), len);
+
 
     //-------------------------------------------------------------------------
 	// 5. Send the signature to the client for authentication
 	printf("5. Sending signature to client for authentication...");
 
-	//BIO_flush
-	//SSL_write
+	BIO_flush(f);
+	SSL_write(ssl,signature,20);
 
     printf("DONE.\n");
     
