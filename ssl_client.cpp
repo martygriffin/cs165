@@ -94,7 +94,7 @@ int main(int argc, char** argv)
 	// 2. Send the server a random number
 	printf("2.  Sending challenge to the server...");
     
-    string randomNumber="31337";
+    string randomNumber="23457";
   // BIO *hash;
    //hash = BIO_new(BIO_f_md());
    //BIO_set_md(hash, EVP_sha1());
@@ -154,7 +154,7 @@ int main(int argc, char** argv)
 	//int len=20;
     
 	printf("AUTHENTICATED\n");
-	printf("    (Generated key: %s)\n", buff2hex((const unsigned char*)buff, len).c_str(), len);
+	printf("    (Generated key: %s)\n", buff2hex((const unsigned char*)buff2, len).c_str(), 128);
 	printf("    (Decrypted key: %s)\n", buff2hex((const unsigned char*)bufferout, len).c_str(), len);
 
     //-------------------------------------------------------------------------

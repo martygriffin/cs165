@@ -13,7 +13,6 @@ using namespace std;
 #include <openssl/rsa.h>	// RSA algorithm etc
 #include <openssl/pem.h>	// For reading .pem files for RSA keys
 #include <openssl/err.h>
-
 #include "utils.h"
 // server 3305
 //-----------------------------------------------------------------------------
@@ -113,14 +112,20 @@ int main(int argc, char** argv)
 	
 	//BIO_write
 	BIO * test= BIO_new(BIO_s_mem());
-
+	//char hashed [20] = {0};
 	BIO_write(test,c_num,20);
 	
 	BIO *hash = BIO_new(BIO_f_md());
 	BIO_set_md(hash, EVP_sha1());
 	BIO_push(hash,test);
 	char* hash_challenge = new char[20];
-	BIO_gets(hash,hash_challenge,20);
+	//BIO_gets(hash,hash_challenge,20);
+int actualRead=0;
+	while((actualRead = BIO_read(hash, hash_challenge, 1024)) >= 1)
+	{
+		//Could send this to multiple chains from here
+		//actualWritten = BIO_write(boutfile, bufferout, actualRead);
+	}
 
 
     int mdlen=0;
@@ -170,7 +175,7 @@ printf("    (Decrypted key: %s)\n", buff2hex((const unsigned char*)bufferout, le
 	printf("5. Sending signature to client for authentication...");
 
 	BIO_flush(f);
-	SSL_write(ssl,signature,20);
+	SSL_write(ssl,signature,128);
 
     printf("DONE.\n");
     
