@@ -149,7 +149,7 @@ buff2hex((const unsigned char*)hash_challenge, 20).c_str(), 20);
 	
 
 	int rsa_encrypt= RSA_private_encrypt(20,(unsigned char*)hash_challenge,(unsigned char *)rsa_enc,rsa,RSA_PKCS1_PADDING);
-int len =20;
+
 char *bufferout[1024]={0};
 BIO *pub= BIO_new_file("rsapublickey.pem","r");
 	RSA *rsa2=PEM_read_bio_RSA_PUBKEY(pub, NULL, NULL, NULL );
@@ -161,6 +161,7 @@ BIO *pub= BIO_new_file("rsapublickey.pem","r");
     //RSA_private_encrypt
 
     int siglen=128;
+    int len =20;
   
     char* signature=rsa_enc;
 

@@ -95,27 +95,24 @@ int main(int argc, char** argv)
 	printf("2.  Sending challenge to the server...");
     
     string randomNumber="23457";
-  // BIO *hash;
-   //hash = BIO_new(BIO_f_md());
-   //BIO_set_md(hash, EVP_sha1());
-   //BIO *binfile = BIO_new_file(randomNumber.c_str(), "r");
-
-//BIO * test= BIO_new(BIO_s_mem());
-//BIO_push(hash, test);
-//int x = BIO_write(test,randomNumber.c_str(),randomNumber.size());
-   
-  // char  read_buffer[1024] = {0};
-   //char * read_buffer= (char *)randomNumber.c_str();
-   //int c =BIO_read(test, read_buffer,1024);
-   //int w=BIO_gets(test,read_buffer,1024);
-//check c value at some point
-//cout<<c;
-  
-//string c= buff2hex((const unsigned char*)read_buffer, w);
-//string r = read_buffer;
-//cout<<r<<endl;
+	//BIO_write
+    char challenge_hase[20]={0};
+	BIO * test= BIO_new(BIO_s_mem());
+	//char hashed [20] = {0};
+	BIO_write(test,randomNumber.c_str(),20);
 	
-	//SSL_write
+	BIO *hash = BIO_new(BIO_f_md());
+	BIO_set_md(hash, EVP_sha1());
+	BIO_push(hash,test);
+	char* hash_challenge = new char[20];
+	//BIO_gets(hash,hash_challenge,20);
+int actualRead=0;
+	while((actualRead = BIO_read(hash, hash_challenge, 1024)) >= 1)
+	{
+		//Could send this to multiple chains from here
+		//actualWritten = BIO_write(boutfile, bufferout, actualRead);
+	}
+
 	SSL_write(ssl,randomNumber.c_str(),BUFFER_SIZE);
     
     printf("SUCCESS.\n");
@@ -124,13 +121,12 @@ int main(int argc, char** argv)
     //-------------------------------------------------------------------------
 	// 3a. Receive the signed key from the server
 	printf("3a. Receiving signed key from server...");
-    char* buff= new char[20];
+    char* buff= new char[128];
     int len=20;
 	//SSL_read;
  	SSL_read(ssl,buff,128);
 
-	printf("RECEIVED.\n");
-	printf("    (Signature: \"%s\" (%d bytes))\n", buff2hex((const unsigned char*)buff, len).c_str(), len);
+	
 
     //-------------------------------------------------------------------------
 	// 3b. Authenticate the signed key
@@ -152,11 +148,15 @@ int main(int argc, char** argv)
 	string generated_key=buff2;
 	string decrypted_key=bufferout;
 	//int len=20;
+    printf("RECEIVED.\n");
+    	printf("    (Signature: %s)\n", buff2hex((const unsigned char*)buff2, 128).c_str(), 128);
+        
+	printf("    (Generated Key: \"%s\" (%d bytes))\n", buff2hex((const unsigned char*)hash_challenge, len).c_str(), 128);
     
-	printf("AUTHENTICATED\n");
-	printf("    (Generated key: %s)\n", buff2hex((const unsigned char*)buff2, len).c_str(), 128);
-	printf("    (Decrypted key: %s)\n", buff2hex((const unsigned char*)bufferout, len).c_str(), len);
+	
 
+	printf("    (Decrypted Key: \"%s\" (%d bytes))\n", buff2hex((const unsigned char*)bufferout, len).c_str(), len);
+    printf("AUTHENTICATED\n");
     //-------------------------------------------------------------------------
 	// 4. Send the server a file request
 	printf("4.  Sending file request to server...");
