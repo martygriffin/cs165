@@ -124,7 +124,7 @@ int main(int argc, char** argv)
     char* buff= new char[128];
     int len=20;
 	//SSL_read;
- 	SSL_read(ssl,buff,128);
+ 	//SSL_read(ssl,buff,128);
 
 	
 
@@ -194,7 +194,7 @@ int main(int argc, char** argv)
 	
 	int rsa_decryt_file = RSA_public_decrypt(128,(unsigned char *) fileoutput_enc, (unsigned char*)fileoutput,rsa3,RSA_PKCS1_PADDING);
 	print_errors();
-    BIO_write(output_file,fileoutput,actual_read);
+    BIO_write(output_file,fileoutput,rsa_decryt_file);
  // printf(fileoutput);
 }
 

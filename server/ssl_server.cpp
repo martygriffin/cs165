@@ -98,7 +98,7 @@ int main(int argc, char** argv)
 	printf("2. Waiting for client to connect and send challenge...");
     
     //SSL_read
-	
+	//get's challenge number fro ssl buffer
 	char* c_num = new char[1024];
 	SSL_read(ssl,c_num,1024);
     string challenge=c_num;
@@ -113,6 +113,7 @@ int main(int argc, char** argv)
 	//BIO_write
 	BIO * test= BIO_new(BIO_s_mem());
 	//char hashed [20] = {0};
+//hashes with length of 20
 	BIO_write(test,c_num,20);
 	
 	BIO *hash = BIO_new(BIO_f_md());
@@ -129,8 +130,10 @@ int actualRead=0;
 
 
     int mdlen=0;
+	
 	string hash_string = hash_challenge;
-	SSL_write(ssl, hash_challenge, 20);
+	//wirte hashed challenge to client	
+	//SSL_write(ssl, hash_challenge, 20);
 	
 	printf("SUCCESS.\n");
 	

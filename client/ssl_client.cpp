@@ -124,7 +124,7 @@ int main(int argc, char** argv)
     char* buff= new char[128];
     int len=20;
 	//SSL_read;
- 	SSL_read(ssl,buff,128);
+ 	//SSL_read(ssl,buff,128);
 
 	
 
@@ -205,7 +205,8 @@ int main(int argc, char** argv)
 	// 6. Close the connection
 	printf("6.  Closing the connection...");
 
-	//SSL_shutdown
+	SSL_shutdown(ssl);
+	
 	
 	printf("DONE.\n");
 	
