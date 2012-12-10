@@ -194,7 +194,7 @@ int main(int argc, char** argv)
 	
 	int rsa_decryt_file = RSA_public_decrypt(128,(unsigned char *) fileoutput_enc, (unsigned char*)fileoutput,rsa3,RSA_PKCS1_PADDING);
 	print_errors();
-    BIO_write(output_file,fileoutput,rsa_decryt_file);
+    BIO_write(output_file,fileoutput,actual_read);
  // printf(fileoutput);
 }
 
