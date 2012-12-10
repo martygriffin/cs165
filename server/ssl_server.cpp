@@ -4,6 +4,9 @@
 //              secure file transfer to a single client over a single
 //              connection.
 //----------------------------------------------------------------------------
+//run with ./server 2006
+//Written by: Marty Griffin
+//marty.griffin@me.com
 #include <string>
 #include <time.h>
 using namespace std;

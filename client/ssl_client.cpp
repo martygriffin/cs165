@@ -5,6 +5,8 @@
 //              connection
 //----------------------------------------------------------------------------
 //./client localhost:3305 griffin.txt 
+//Written by: Marty Griffin
+//marty.griffin@me.com
 #include <string>
 #include <time.h>               // to seed random number generator
 #include <sstream>          // stringstreams
