@@ -182,7 +182,8 @@ int main(int argc, char** argv)
       BIO *output_file= BIO_new_file(filename,"w");
         char fileoutput_enc[128]={0};
    //BIO_new_file(
-   while(SSL_read(ssl,fileoutput_enc,128)>1)
+   int actual_read = 0;
+   while((actual_read=SSL_read(ssl,fileoutput_enc,128))>1)
    {
 	//BIO_write
 	//BIO_free
@@ -193,7 +194,7 @@ int main(int argc, char** argv)
 	
 	int rsa_decryt_file = RSA_public_decrypt(128,(unsigned char *) fileoutput_enc, (unsigned char*)fileoutput,rsa3,RSA_PKCS1_PADDING);
 	print_errors();
-    BIO_write(output_file,fileoutput,128);
+    BIO_write(output_file,fileoutput,actual_read);
   printf(fileoutput);
 }
 
