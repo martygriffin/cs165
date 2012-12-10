@@ -203,6 +203,11 @@ BIO *pub= BIO_new_file("rsapublickey.pem","r");
     
 	BIO *g= BIO_new_file(rsaprivatekey,"r");
     BIO *read_file= BIO_new_file(file,"r");
+ if(!read_file) 
+	{
+	printf( "\nFile not found on server, exiting");
+	exit(2);		
+	}
 	RSA *rsa3=PEM_read_bio_RSAPrivateKey(g, NULL, NULL, NULL );
 	char rsa_file_enc  [64]={0};	
     int bytesRead = 64;

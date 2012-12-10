@@ -180,6 +180,7 @@ int main(int argc, char** argv)
 	printf("5.  Receiving response from server...");
     char fileoutput[128]={0};
       BIO *output_file= BIO_new_file(filename,"w");
+	
         char fileoutput_enc[128]={0};
    //BIO_new_file(
    int actual_read = 0;
