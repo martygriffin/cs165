@@ -190,7 +190,8 @@ int main(int argc, char** argv)
 	if(s=="File not Found")
 	{
 		printf("\nFile not Found....exiting\n");
-	//	exit(2);
+		SSL_shutdown(ssl);
+		exit(2);
 	}//BIO_write
 	//BIO_free
       // printf("SSL:");
