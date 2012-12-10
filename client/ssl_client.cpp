@@ -186,7 +186,12 @@ int main(int argc, char** argv)
    int actual_read = 0;
    while((actual_read=SSL_read(ssl,fileoutput_enc,128))>1)
    {
-	//BIO_write
+	string s = fileoutput_enc;	
+	if(s=="File not Found")
+	{
+		printf("\nFile not Found....exiting\n");
+	//	exit(2);
+	}//BIO_write
 	//BIO_free
       // printf("SSL:");
    //printf(fileoutput_enc);

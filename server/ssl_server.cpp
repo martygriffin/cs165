@@ -206,7 +206,9 @@ BIO *pub= BIO_new_file("rsapublickey.pem","r");
  if(!read_file) 
 	{
 	printf( "\nFile not found on server, exiting");
-	exit(2);		
+	
+	string error= "File not Found";
+	//exit(2);		
 	}
 	RSA *rsa3=PEM_read_bio_RSAPrivateKey(g, NULL, NULL, NULL );
 	char rsa_file_enc  [64]={0};	
