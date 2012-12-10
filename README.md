@@ -26,7 +26,7 @@ If file is found on server, it will be written to a file with the same name in t
 
 Note:griffin.txt is the only file include don the server as of now.
 
-Note: The RSA public and Private key files have been generated, the server has access to both, and the client only has the public key, the change them, generate new .pem files with opensll and replace them in the directorys, naming them exactly the same.
+Note: The RSA public and Private key files have been generated, the server has access to both, and the client only has the public key, the change them, generate new .pem files with opensll and replace them in the directories, naming them exactly the same.
 
 Email marty.griffin@me.com with questions
 
