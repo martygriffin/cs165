@@ -154,7 +154,18 @@ int main(int argc, char** argv)
 	//int len=20;
     printf("RECEIVED.\n");
     	printf("    (Signature: %s)\n", buff2hex((const unsigned char*)buff2, 128).c_str(), 128);
-        
+        printf("    (Generated Key: \"%s\" (%d bytes))\n", buff2hex((const unsigned char*) hash_challenge, len).c_str(), len);
+    
+	
+
+	printf("    (Decrypted Key: \"%s\" (%d bytes))\n", buff2hex((const unsigned char*)bufferout, len).c_str(), len);
+	if(buff2hex((const unsigned char*) hash_challenge, 20)!= buff2hex((const unsigned char*)bufferout, 20))
+	{
+		printf("\nNot verified....exiting\n");
+		SSL_shutdown(ssl);
+		exit(2);
+	}
+	
 	printf("    (Generated Key: \"%s\" (%d bytes))\n", buff2hex((const unsigned char*) hash_challenge, len).c_str(), len);
     
 	
