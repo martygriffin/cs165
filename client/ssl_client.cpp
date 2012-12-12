@@ -12,7 +12,9 @@
 #include <sstream>          // stringstreams
 #include <iostream>
 using namespace std;
-
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 #include <openssl/ssl.h>	// Secure Socket Layer library
 #include <openssl/bio.h>	// Basic Input/Output objects for SSL
 #include <openssl/rsa.h>	// RSA algorithm etc
@@ -95,8 +97,17 @@ int main(int argc, char** argv)
     //-------------------------------------------------------------------------
 	// 2. Send the server a random number
 	printf("2.  Sending challenge to the server...");
+    srand(time(NULL));
+	int ran =  1000 + (rand() % 9999999);
+	string Result;         
+
+	ostringstream convert;  
+
+	convert << ran;      
+
+	Result = convert.str();
     
-    string randomNumber="23457";
+string randomNumber=Result;
 	//BIO_write
     char challenge_hase[20]={0};
 	BIO * test= BIO_new(BIO_s_mem());
