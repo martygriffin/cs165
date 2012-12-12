@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     string challenge=rsa_hash;
     
 	printf("DONE.\n");
-	printf("    (Challenge: \"%s\")\n",  buff2hex((const unsigned char*)rsa_hash, 128).c_str(), 128);
+	printf("    (Challenge: \"%s\")\n",  buff2hex((const unsigned char*)rsa_hash, 20).c_str(), 20);
 
     //-------------------------------------------------------------------------
 	// 3. Generate the SHA1 hash of the challenge
