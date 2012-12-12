@@ -30,4 +30,4 @@ Note: The RSA public and Private key files have been generated, the server has a
 
 Email marty.griffin@me.com with questions
 
-
+If program seg faults, run again.
