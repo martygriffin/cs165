@@ -12,9 +12,7 @@
 #include <sstream>          // stringstreams
 #include <iostream>
 using namespace std;
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
+#include <openssl/rand.h>
 #include <openssl/ssl.h>	// Secure Socket Layer library
 #include <openssl/bio.h>	// Basic Input/Output objects for SSL
 #include <openssl/rsa.h>	// RSA algorithm etc
@@ -97,39 +95,32 @@ int main(int argc, char** argv)
     //-------------------------------------------------------------------------
 	// 2. Send the server a random number
 	printf("2.  Sending challenge to the server...");
-    srand(time(NULL));
-	int ran =  1000 + (rand() % 9999999);
-	string Result;         
+  	
 
-	ostringstream convert;  
-
-	convert << ran;      
-
-	Result = convert.str();
-    
-string randomNumber=Result;
 	//BIO_write
-    char challenge_hase[20]={0};
+        unsigned char challenge_hash[20]={0};
+	RAND_bytes(challenge_hash,20);
 	BIO * test= BIO_new(BIO_s_mem());
 	//char hashed [20] = {0};
-	BIO_write(test,randomNumber.c_str(),20);
-	
 	BIO *hash = BIO_new(BIO_f_md());
 	BIO_set_md(hash, EVP_sha1());
 	BIO_push(hash,test);
+	BIO_write(test,challenge_hash,20);
+	
+	
+
 	char* hash_challenge = new char[20];
 	//BIO_gets(hash,hash_challenge,20);
-    int actualRead=0;
-	while((actualRead = BIO_read(hash, hash_challenge, 1024)) >= 1)
-	{
-		//Could send this to multiple chains from here
-		//actualWritten = BIO_write(boutfile, bufferout, actualRead);
-	}
+	BIO_read(hash, hash_challenge, 20);
+	BIO *pub1= BIO_new_file("rsapublickey.pem","r");
+	RSA *rsa4=PEM_read_bio_RSA_PUBKEY(pub1, NULL, NULL, NULL ); 
+	char rsa_challenge[128]={0};
+	int rsa_encrypt = RSA_public_encrypt(20,(unsigned char *) challenge_hash, (unsigned char*)rsa_challenge,rsa4,RSA_PKCS1_PADDING);
 
-	SSL_write(ssl,randomNumber.c_str(),BUFFER_SIZE);
+	SSL_write(ssl,rsa_challenge,128);
     
     printf("SUCCESS.\n");
-	printf("    (Challenge sent: \"%s\")\n", randomNumber.c_str(),20);
+	printf("    (Challenge sent: \"%s\")\n",buff2hex((const unsigned char*)challenge_hash, 20).c_str(), 20);
 
     //-------------------------------------------------------------------------
 	// 3a. Receive the signed key from the server
@@ -164,7 +155,7 @@ string randomNumber=Result;
     printf("RECEIVED.\n");
     	printf("    (Signature: %s)\n", buff2hex((const unsigned char*)buff2, 128).c_str(), 128);
         
-	printf("    (Generated Key: \"%s\" (%d bytes))\n", buff2hex((const unsigned char*)hash_challenge, len).c_str(), len);
+	printf("    (Generated Key: \"%s\" (%d bytes))\n", buff2hex((const unsigned char*) hash_challenge, len).c_str(), len);
     
 	
 

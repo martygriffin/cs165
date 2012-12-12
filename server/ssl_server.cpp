@@ -99,15 +99,21 @@ int main(int argc, char** argv)
     //-------------------------------------------------------------------------
 	// 2. Receive a random number (the challenge) from the client
 	printf("2. Waiting for client to connect and send challenge...");
-    
+    char rsaprivatekey[]="rsaprivatekey.pem";
     //SSL_read
 	//get's challenge number fro ssl buffer
+	BIO *f2= BIO_new_file(rsaprivatekey,"r");
+	RSA *rsa4=PEM_read_bio_RSAPrivateKey(f2, NULL, NULL, NULL );
 	char* c_num = new char[1024];
-	SSL_read(ssl,c_num,1024);
-    string challenge=c_num;
+	int i = SSL_read(ssl,c_num,128);
+	char rsa_hash [128]= {0};
+	int rsa_decrypt= RSA_private_decrypt(i,(unsigned char*)c_num,(unsigned char *)rsa_hash,rsa4,RSA_PKCS1_PADDING);
+
+	
+    string challenge=rsa_hash;
     
 	printf("DONE.\n");
-	printf("    (Challenge: \"%s\")\n", challenge.c_str());
+	printf("    (Challenge: \"%s\")\n",  buff2hex((const unsigned char*)rsa_hash, 128).c_str(), 128);
 
     //-------------------------------------------------------------------------
 	// 3. Generate the SHA1 hash of the challenge
@@ -117,7 +123,7 @@ int main(int argc, char** argv)
 	BIO * test= BIO_new(BIO_s_mem());
 	//char hashed [20] = {0};
 //hashes with length of 20
-	BIO_write(test,c_num,20);
+	BIO_write(test,rsa_hash,20);
 	
 	BIO *hash = BIO_new(BIO_f_md());
 	BIO_set_md(hash, EVP_sha1());
@@ -125,11 +131,8 @@ int main(int argc, char** argv)
 	char* hash_challenge = new char[20];
 	//BIO_gets(hash,hash_challenge,20);
 int actualRead=0;
-	while((actualRead = BIO_read(hash, hash_challenge, 1024)) >= 1)
-	{
-		//Could send this to multiple chains from here
-		//actualWritten = BIO_write(boutfile, bufferout, actualRead);
-	}
+	BIO_read(hash, hash_challenge, 20);
+	
 
 
     int mdlen=0;
@@ -147,7 +150,7 @@ buff2hex((const unsigned char*)hash_challenge, 20).c_str(), 20);
 	// 4. Sign the key using the RSA private key specified in the
 	//     file "rsaprivatekey.pem"
 	printf("4. Signing the key...");
-	char rsaprivatekey[]="rsaprivatekey.pem";
+	
 	BIO *f= BIO_new_file(rsaprivatekey,"r");
 	RSA *rsa=PEM_read_bio_RSAPrivateKey(f, NULL, NULL, NULL );
 	char rsa_enc  [1024]={0};	
